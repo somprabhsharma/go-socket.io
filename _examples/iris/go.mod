@@ -1,11 +1,11 @@
-module github.com/googollee/go-socket.io/_examples/iris
+module github.com/somprabhsharma/go-socket.io/_examples/iris
 
 go 1.16
 
 require (
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/googollee/go-socket.io v0.0.0-00010101000000-000000000000
+	github.com/somprabhsharma/go-socket.io v0.0.0-00010101000000-000000000000
 	github.com/imkira/go-interpol v1.1.0 // indirect
 	github.com/kataras/iris/v12 v12.1.8
 	github.com/moul/http2curl v1.0.0 // indirect
@@ -19,4 +19,4 @@ require (
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 )
 
-replace github.com/googollee/go-socket.io => ../../
+replace github.com/somprabhsharma/go-socket.io => ../../
