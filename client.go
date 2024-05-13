@@ -358,7 +358,8 @@ func (c *Client) connectClient() error {
 	})
 
 	header := parser.Header{
-		Type: parser.Connect,
+		Namespace: c.namespace,
+		Type:      parser.Connect,
 	}
 
 	return c.conn.encoder.Encode(header)
