@@ -1,7 +1,7 @@
 package session
 
 import (
-	"github.com/googollee/go-socket.io/engineio/frame"
+	"github.com/somprabhsharma/go-socket.io/engineio/frame"
 )
 
 // FrameType is type of message frame.

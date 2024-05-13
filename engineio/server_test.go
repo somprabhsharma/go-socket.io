@@ -13,12 +13,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/googollee/go-socket.io/engineio/frame"
-	"github.com/googollee/go-socket.io/engineio/packet"
-	"github.com/googollee/go-socket.io/engineio/session"
-	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/engineio/transport/polling"
-	"github.com/googollee/go-socket.io/engineio/transport/websocket"
+	"github.com/somprabhsharma/go-socket.io/engineio/frame"
+	"github.com/somprabhsharma/go-socket.io/engineio/packet"
+	"github.com/somprabhsharma/go-socket.io/engineio/session"
+	"github.com/somprabhsharma/go-socket.io/engineio/transport"
+	"github.com/somprabhsharma/go-socket.io/engineio/transport/polling"
+	"github.com/somprabhsharma/go-socket.io/engineio/transport/websocket"
 )
 
 func TestEnginePolling(t *testing.T) {
@@ -236,7 +236,7 @@ func TestEngineUpgrade(t *testing.T) {
 	must.NoError(err)
 
 	query := u.Query()
-	query.Set("EIO", "3")
+	query.Set("EIO", "4")
 	u.RawQuery = query.Encode()
 
 	p, err := polling.Default.Dial(u, nil)

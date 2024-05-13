@@ -2,7 +2,7 @@ package parser
 
 import (
 	"bytes"
-	"github.com/googollee/go-socket.io/engineio/session"
+	"github.com/somprabhsharma/go-socket.io/engineio/session"
 	"io"
 	"reflect"
 	"testing"

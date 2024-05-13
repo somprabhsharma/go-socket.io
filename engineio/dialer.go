@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/googollee/go-socket.io/engineio/packet"
-	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/logger"
+	"github.com/somprabhsharma/go-socket.io/engineio/packet"
+	"github.com/somprabhsharma/go-socket.io/engineio/transport"
+	"github.com/somprabhsharma/go-socket.io/logger"
 )
 
 // Dialer is dialer configure.
@@ -26,7 +26,7 @@ func (d *Dialer) Dial(urlStr string, requestHeader http.Header) (Conn, error) {
 	}
 
 	query := u.Query()
-	query.Set("EIO", "3")
+	query.Set("EIO", "4")
 	u.RawQuery = query.Encode()
 
 	var conn transport.Conn
@@ -95,8 +95,6 @@ func (d *Dialer) Dial(urlStr string, requestHeader http.Header) (Conn, error) {
 			transport: t.Name(),
 			close:     make(chan struct{}),
 		}
-
-		go ret.serve()
 
 		return ret, nil
 	}
