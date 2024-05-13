@@ -11,11 +11,11 @@ import (
 	"net/url"
 	"sync/atomic"
 
-	"github.com/googollee/go-socket.io/engineio/transport"
-	"github.com/googollee/go-socket.io/engineio/transport/utils"
-	"github.com/googollee/go-socket.io/logger"
 	"github.com/somprabhsharma/go-socket.io/engineio/packet"
 	"github.com/somprabhsharma/go-socket.io/engineio/payload"
+	"github.com/somprabhsharma/go-socket.io/engineio/transport"
+	"github.com/somprabhsharma/go-socket.io/engineio/transport/utils"
+	"github.com/somprabhsharma/go-socket.io/logger"
 )
 
 type clientConn struct {
