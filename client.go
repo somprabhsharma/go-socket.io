@@ -9,6 +9,7 @@ import (
 	"github.com/somprabhsharma/go-socket.io/engineio/transport/websocket"
 	"github.com/somprabhsharma/go-socket.io/logger"
 	"github.com/somprabhsharma/go-socket.io/parser"
+	"net/http"
 	"net/url"
 	"path"
 	"strconv"
@@ -23,6 +24,7 @@ var EmptyAddrErr = errors.New("empty addr")
 type Client struct {
 	namespace string
 	url       string
+	headers   http.Header
 
 	conn     *conn
 	handlers *namespaceHandlers
@@ -40,7 +42,7 @@ type Client struct {
 
 // NewClient returns a server
 // addr like http://asd.com:8080/{$namespace}
-func NewClient(addr string, opts *engineio.Options) (*Client, error) {
+func NewClient(addr string, headers http.Header, opts *engineio.Options) (*Client, error) {
 	if addr == "" {
 		return nil, EmptyAddrErr
 	}
@@ -64,6 +66,7 @@ func NewClient(addr string, opts *engineio.Options) (*Client, error) {
 	return &Client{
 		namespace: namespace,
 		url:       u.String(),
+		headers:   headers,
 		handlers:  newNamespaceHandlers(),
 		opts:      opts,
 		retryStrategy: NewBackOff(RetryStrategy{
@@ -132,16 +135,16 @@ func (c *Client) Connect() error {
 		dialer.Transports = c.opts.Transports
 	}
 
-	enginioCon, err := dialer.Dial(c.url, nil)
+	enginioCon, err := dialer.Dial(c.url, c.headers)
 	if err != nil {
 		return err
 	}
 
 	c.conn = newConn(enginioCon, c.handlers)
 
-	if err := c.conn.connectClient(); err != nil {
+	if err := c.connectClient(); err != nil {
 		_ = c.Close()
-		if root, ok := c.handlers.Get(rootNamespace); ok && root.onError != nil {
+		if root, ok := c.handlers.Get(c.namespace); ok && root.onError != nil {
 			root.onError(nil, err)
 		}
 
@@ -290,7 +293,7 @@ func (c *Client) clientRead() {
 		var header parser.Header
 
 		if err := c.conn.decoder.DecodeHeader(&header, &event); err != nil {
-			c.conn.onError(rootNamespace, err)
+			c.conn.onError(c.namespace, err)
 
 			logger.Error("clientRead Error in Decoder", err)
 
@@ -298,7 +301,7 @@ func (c *Client) clientRead() {
 		}
 
 		if header.Namespace == aliasRootNamespace {
-			header.Namespace = rootNamespace
+			header.Namespace = c.namespace
 		}
 
 		var err error
@@ -339,24 +342,24 @@ func (c *Client) getNamespace(ns string) *namespaceHandler {
 	return ret
 }
 
-func (c *conn) connectClient() error {
-	rootHandler, ok := c.handlers.Get(rootNamespace)
+func (c *Client) connectClient() error {
+	rootHandler, ok := c.conn.handlers.Get(c.namespace)
 	if !ok {
 		return errUnavailableRootHandler
 	}
 
-	root := newNamespaceConn(c, aliasRootNamespace, rootHandler.broadcast)
-	c.namespaces.Set(rootNamespace, root)
+	root := newNamespaceConn(c.conn, aliasRootNamespace, rootHandler.broadcast)
+	c.conn.namespaces.Set(c.namespace, root)
 
 	root.Join(root.Conn.ID())
 
-	c.namespaces.Range(func(ns string, nc *namespaceConn) {
-		nc.SetContext(c.Conn.Context())
+	c.conn.namespaces.Range(func(ns string, nc *namespaceConn) {
+		nc.SetContext(c.conn.Conn.Context())
 	})
 
 	header := parser.Header{
 		Type: parser.Connect,
 	}
 
-	return c.encoder.Encode(header)
+	return c.conn.encoder.Encode(header)
 }
