@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/googollee/go-socket.io/engineio/frame"
-	"github.com/googollee/go-socket.io/engineio/packet"
-	"github.com/googollee/go-socket.io/engineio/transport"
+	"github.com/somprabhsharma/go-socket.io/engineio/frame"
+	"github.com/somprabhsharma/go-socket.io/engineio/packet"
+	"github.com/somprabhsharma/go-socket.io/engineio/transport"
 )
 
 func TestDialOpen(t *testing.T) {

@@ -22,7 +22,7 @@ type BufferData struct {
 }
 
 // MarshalJSON marshals to JSON.
-func (a Buffer) MarshalJSON() ([]byte, error) {
+func (a *Buffer) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	if err := a.marshalJSONBuf(&buf); err != nil {
 		return nil, err
